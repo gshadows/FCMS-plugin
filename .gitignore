@@ -1,0 +1,13 @@
+build
+obj
+releases
+
+EDDDLLInterfaces.dll
+ObservatoryFramework.dll
+
+*.bak
+*.orig
+*.log
+*.~*
+~$*
+.~lock.*

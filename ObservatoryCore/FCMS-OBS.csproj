@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net8.0</TargetFramework>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+    <AssemblyVersion>$(PluginVersion)</AssemblyVersion>
+    <Version>$(PluginVersion)</Version>
+    <FileVersion>$(PluginVersion)</FileVersion>
+
+	<AssemblyTitle>FCMS plugin for Observatory Core</AssemblyTitle>
+	<Product>FCMS plugin for Observatory Core</Product>
+
+	<AssemblyName>$(PluginName)</AssemblyName>
+
+    <Description>Plugin for Observatory Core to notify FCMS (https://fleetcarrier.space) about Elite Dangerous fleet carrier events.</Description>
+
+    <Authors>G-Shadow</Authors>
+	<Company>G-Shadow</Company>
+    <Copyright>© G-Shadow, $([System.DateTime]::Now.Year)</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="ObservatoryFramework">
+      <HintPath>$(ObservatoryPath)\ObservatoryFramework.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+     <Compile Include="..\Common\*.cs" />
+  </ItemGroup>
+
+</Project>

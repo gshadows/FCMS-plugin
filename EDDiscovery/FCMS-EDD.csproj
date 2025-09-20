@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	<TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+
+    <AssemblyVersion>$(PluginVersion)</AssemblyVersion>
+    <Version>$(PluginVersion)</Version>
+    <FileVersion>$(PluginVersion)</FileVersion>
+
+	<AssemblyTitle>FCMS plugin for EDDiscovery</AssemblyTitle>
+	<Product>FCMS plugin for EDDiscovery</Product>
+
+	<AssemblyName>$(PluginName)</AssemblyName>
+
+    <Description>Plugin for EDDiscovery to notify FCMS (https://fleetcarrier.space) about Elite Dangerous fleet carrier events.</Description>
+
+    <Authors>G-Shadow</Authors>
+	<Company>G-Shadow</Company>
+    <Copyright>© G-Shadow, $([System.DateTime]::Now.Year)</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="EDDDLLInterfaces">
+      <HintPath>$(EDDInstall)\EDDDLLInterfaces.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+     <Compile Include="..\Common\*.cs" />
+  </ItemGroup>
+
+</Project>
