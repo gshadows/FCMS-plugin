@@ -9,10 +9,10 @@ public static class Logger {
 
     public static void log(string message) {
         if (logFileName == null || logFileName == "") return;
-        string formattedMessage = $"{DateTime.Now.ToString("dd-MM-yyyy hh:mm:ss.s")} {message}\n";
+        string formattedMessage = $"{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.s")} {message}\n";
         string ret;
         if (!headerSent) {
-            ret = $"{DateTime.Now.ToString("dd-MM-yyyy hh:mm:ss.s")} {version}\n{formattedMessage}";
+            ret = $"{DateTime.Now.ToString("dd-MM-yyyy HH:mm:ss.s")} {version}\n{formattedMessage}";
             headerSent = true;
         } else {
             ret = formattedMessage;

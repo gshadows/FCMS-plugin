@@ -43,7 +43,13 @@ public class FcmsWorker : IObservatoryWorker {
 
 
     public void JournalEvent<TJournal>(TJournal journal) where TJournal : JournalBase {
-        if (core.IsLogMonitorBatchReading) return; // Skip historical events. Only realtime need.
+        if (core.IsLogMonitorBatchReading) {
+            // Skip historical events. Only realtime need. Except commander name extraction.
+            if (journal is LoadGame) {
+                api.commander = (journal as LoadGame).Commander;
+            }
+            return;
+        }
 
         if (!uniqueInstanceChecker.isUniqueInstance()) {
             Logger.log("Skipping FCMS: another instance already running!");
@@ -58,7 +64,7 @@ public class FcmsWorker : IObservatoryWorker {
                 api.SendCarrierJumpCancelled();
                 break;
             case CarrierTradeOrder tradeOrder:
-                api.SendMarketUpdate();
+                if (settings.sendMarket) api.SendMarketUpdate();
                 break;
         }
     }
@@ -73,7 +79,7 @@ public class FcmsWorker : IObservatoryWorker {
         Logger.logFileName = settings.LogFile;
 
         string userAgent = $"{pluginInfo.shortName}/{pluginInfo.version}";
-        api = new FcmsApi(settings.commander, settings.userName, settings.apiKey, userAgent, core.HttpClient);
+        api = new FcmsApi(settings.userName, settings.apiKey, userAgent, core.HttpClient);
 
         var unique = uniqueInstanceChecker.isUniqueInstance();
         Logger.log($"Checking unique instance: {unique}");

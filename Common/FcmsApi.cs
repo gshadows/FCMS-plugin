@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 public class FcmsApi {
     private const string API_URL = "https://fleetcarrier.space/api";
-    private const int API_TIMEOUT_SEC = 5;
 
+    public string commander= ""; // Will be updated when load game event received.
     public string user;
     public string apiKey;
     private readonly string userAgent; // "EDD-FCMS/1.0.0"
@@ -19,9 +19,10 @@ public class FcmsApi {
         this.userAgent = userAgent;
         this.httpClient = httpClient;
         
-        var maskedKey = (apiKey.Length <= 4) ? "..." : $"{apiKey[..2]}...{apiKey[^2..]}";
-        Logger.log($"FCMS API: user [{user}], key [{maskedKey}], userAgent [{userAgent}]");
+        Logger.log($"FCMS API: cmdr [{commander}], user [{user}], key [{maskedKey()}], userAgent [{userAgent}]");
     }
+    
+    private string maskedKey() => (apiKey.Length <= 4) ? "..." : $"{apiKey[..2]}...{apiKey[^2..]}";
 
 
     public string GenerateCarrierJumpJSON(string systemName, string body) {
@@ -42,20 +43,18 @@ public class FcmsApi {
             ? $"{{\"event\":\"{eventName}\"}}" 
             : $"{{\"event\":\"{eventName}\",{additionalData}}}";
         
-        return $"{{\"user\":\"{user}\",\"key\":\"{apiKey}\",\"data\":{dataContent}}}";
+        return $"{{\"user\":\"{user}\",\"key\":\"{apiKey}\",\"cmdr\":\"{commander}\",\"data\":{dataContent}}}";
     }
 
 
     public async Task SendRequestAsync(string jsonData) {
         try {
-            Logger.log(jsonData);
+            Logger.log(jsonData.Replace(apiKey, maskedKey()));
             
-            if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(apiKey)) {
+            if (string.IsNullOrEmpty(commander) || string.IsNullOrEmpty(user) || string.IsNullOrEmpty(apiKey)) {
                 Logger.log("Error: No user name or API key set!");
                 return;
             }
-            
-            httpClient.Timeout = TimeSpan.FromSeconds(API_TIMEOUT_SEC);
             
             var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var response = await httpClient.PostAsync(API_URL, content);
