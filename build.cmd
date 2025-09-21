@@ -8,7 +8,7 @@ goto :EOF
 :BUILD
 echo ===== Building %1...
 pushd %1
-call %1\build.cmd
+call build.cmd
 popd
 if ERRORLEVEL 1 exit
 exit /B

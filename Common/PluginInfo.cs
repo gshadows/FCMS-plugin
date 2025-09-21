@@ -14,20 +14,22 @@ public class PluginInfo {
     public PluginInfo() {
         var assembly = typeof(PluginInfo).Assembly;
         var assemblyName = assembly.GetName();
+
         var descriptionAttr = assembly.GetCustomAttribute<AssemblyDescriptionAttribute>();
         var copyrightAttr = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>();
-        
-        fullName = assemblyName.FullName ?? "";
-        shortName = assemblyName.Name ?? "";
+        var titleAttribute = assembly.GetCustomAttribute<AssemblyTitleAttribute>();
+
+        fullName = titleAttribute.Title ?? string.Empty;
+        shortName = assemblyName.Name ?? string.Empty;
         description = descriptionAttr?.Description ?? string.Empty;
-        version = assemblyName.Version?.ToString() ?? "";
-        
+        version = assemblyName.Version?.ToString() ?? string.Empty;
+
         var copyright = copyrightAttr?.Copyright;
         if (copyright != null) {
             var match = Regex.Match(copyright, @"©\s*(.*?)(?=\s*,?\s*\d{4}|$)");
-            authorName = match.Success ? match.Groups[1].Value : "";
+            authorName = match.Success ? match.Groups[1].Value : string.Empty;
         } else {
-            authorName = "";
+            authorName = string.Empty;
         }
     }
 }
